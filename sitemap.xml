@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://$GIT_USER_NAME.github.io/pingme/index.html</loc>
+    <lastmod>2025-03-04T12:53:44.603Z</lastmod>
+  </url>
+  <url>
+    <loc>https://$GIT_USER_NAME.github.io/pingme/pingme_api.html</loc>
+    <lastmod>2025-03-04T12:53:44.933Z</lastmod>
+  </url>
+  <url>
+    <loc>https://$GIT_USER_NAME.github.io/pingme/core.html</loc>
+    <lastmod>2025-03-04T12:53:44.570Z</lastmod>
+  </url>
+  <url>
+    <loc>https://$GIT_USER_NAME.github.io/pingme/02_pingme_services.html</loc>
+    <lastmod>2025-03-04T12:53:44.862Z</lastmod>
+  </url>
+  <url>
+    <loc>https://$GIT_USER_NAME.github.io/pingme/pingme_class.html</loc>
+    <lastmod>2025-03-04T12:53:44.824Z</lastmod>
+  </url>
+</urlset>
