@@ -42,7 +42,16 @@ To run as a webservice, be sure the config_file has the webhook param!
 !pingme_start_webservice -h
 ```
 
-    zsh:1: command not found: start_pingme_webservice
+    usage: pingme_start_webservice [-h] [--host HOST] [--port PORT]
+                                   [--config_file CONFIG_FILE]
+    
+    Start the PingMe API server.
+    
+    options:
+      -h, --help                 show this help message and exit
+      --host HOST                Host to run the server on (default: 127.0.0.1)
+      --port PORT                Port to run the server on" (default: 5000)
+      --config_file CONFIG_FILE  Path to config file"
 
 ``` python
 !pingme_webhook_default -h
