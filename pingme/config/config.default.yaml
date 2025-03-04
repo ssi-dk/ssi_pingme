@@ -1,0 +1,65 @@
+# When accessing this in the code you'll work with it as a dict.
+# ENV variables will be replaced with their values. This is done with the envyaml package that is in the code template `load_config`.
+# By convention all variables for the project should have the PINGME_* prefix.
+# e.g
+# name: ${PINGME_NAME}
+example:
+    input:
+        name: ${PINGME_USER_INPUT_NAME}
+        alternative_name: Lee
+pingme:
+    user_input:
+        name: ${PROJECTNAME_USER_INPUT_NAME}
+        alternative_name: Lee
+        card:
+            name: "default"
+            context: {"title":"Example title","text":"An example of text"}
+    options:
+        email:
+            from: ${PINGME_EMAIL_FROM}
+            to:  ${PINGME_EMAIL_TO}
+            smtp:
+                user: ${PINGME_EMAIL_SMTP_USER}
+                password: ${PINGME_EMAIL_SMTP_PASSWORD}
+                host: ${PINGME_EMAIL_SMTP_HOST}
+                port: ${PINGME_EMAIL_SMTP_PORT}
+        webhook:
+            url: ${PINGME_WEBHOOK_URL}
+            headers:
+                Content-Type: application/json
+        logfile:
+            path: ${PROJECTNAME_LOGFILE_PATH}
+    cards:
+        default:
+            variables:
+                title: "Default title"
+                text: "Default text"
+            template:
+                {
+                    "type":"message",
+                    "attachments":[
+                    {
+                        "contentType":"application/vnd.microsoft.card.adaptive",
+                        "contentUrl":null,
+                        "content":{
+                            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                            "type": "AdaptiveCard",
+                            "version": "1.5",
+                            "body": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${title}",
+                                    "wrap": true,
+                                    "color": "Accent",
+                                    "size": "Large"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${text}",
+                                    "wrap": true
+                                }
+                            ]
+                        }
+                    }
+                    ]
+                }

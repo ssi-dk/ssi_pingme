@@ -1,0 +1,7 @@
+include settings.ini
+include LICENSE
+include CONTRIBUTING.md
+include README.md
+recursive-exclude * __pycache__
+include pingme/config/config.default.env
+include pingme/config/config.default.yaml

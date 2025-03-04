@@ -1,0 +1,6 @@
+#sample_id	file_path	metadata1	metadata2
+Sample1	/path/to/sample1.fasta	value1	option1
+Sample2	/path/to/sample2.fasta	value2	option2
+Sample3	/path/to/sample3.fasta	value3	option1
+Sample4	/path/to/sample4.fasta	value1	option2
+Sample5	/path/to/sample5.fasta	value2	option1
