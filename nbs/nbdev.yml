@@ -1,9 +1,0 @@
-project:
-  output-dir: _docs
-
-website:
-  title: "ssi_pingme"
-  site-url: "https://$GIT_USER_NAME.github.io/pingme"
-  description: "TODO"
-  repo-branch: main
-  repo-url: "https://github.com/$GIT_USER_NAME/pingme"
