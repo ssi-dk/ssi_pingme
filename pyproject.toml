@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pingme"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Kim Ng", email = "kimleeng@gmail.com" },
+]
+
+dependencies = [
+    "envyaml",
+    "fastapi",
+    "fastcore",
+    "httpx",
+    "pandas",
+    "pydantic",
+    "pydantic-settings",
+    "python-dotenv",
+    "requests",
+    "uvicorn",
+]
+
+[project.urls]
+Documentation = "https://github.com/ssi-dk/ssi_pingme#readme"
+Issues = "https://github.com/ssi-dk/ssi_pingme/issues"
+Source = "https://github.com/ssi-dk/ssi_pingme"
+
+[tool.hatch.version]
+path = "src/pingme/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pingme"]
+
+
+
+[project.scripts]
+pingme = "pingme.pingme_class:cli"
+pingme_start_webservice = "pingme.api:webservice"
+pingme_webhook_card = "pingme.services:pingme_send_card_to_webhook"
+pingme_webhook_default = "pingme.services:pingme_send_default_card_to_webhook"
+pingme_webhook_simple = "pingme.services:pingme_send_simple_card_to_webhook"

@@ -167,3 +167,6 @@ checklink/cookies.txt
 
 # Quarto
 .quarto
+# pixi environments
+.pixi/*
+!.pixi/config.toml
