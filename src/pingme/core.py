@@ -94,8 +94,7 @@ def setup_logging(log_level=None):
 # Initialize logger
 logger = setup_logging()
 
-# %% ../nbs/00_core.ipynb 10
-# standard libs
+
 import os
 import sys
 
@@ -117,7 +116,7 @@ from pydantic import BaseModel, field_validator
 from pathlib import Path
 from typing import Any
 
-# %% ../nbs/00_core.ipynb 13
+
 def set_env_variables(config_path: str, overide_env_vars: bool = True) -> bool:
     """
     Load dot env sets environmental values from a file, if the value already exists it will not be overwritten unless override is set to True.
@@ -149,7 +148,7 @@ def set_env_variables(config_path: str, overide_env_vars: bool = True) -> bool:
 
     return True
 
-# %% ../nbs/00_core.ipynb 15
+
 def get_config(config_path: str = None, overide_env_vars: bool = True) -> dict:
     """
     Load the config.env from the config path, the config.env should reference the config.yaml file, which will be loaded and returned as
@@ -177,11 +176,11 @@ def get_config(config_path: str = None, overide_env_vars: bool = True) -> dict:
 
     return config
 
-# %% ../nbs/00_core.ipynb 17
+
 # create a os.PathLike object
 config = get_config(os.environ.get("CORE_CONFIG_FILE", ""))
 
-# %% ../nbs/00_core.ipynb 19
+
 def show_project_env_vars(config: dict) -> None:
     """
     Show all the project environment variables, this is useful for debugging and seeing what is being set
@@ -197,8 +196,8 @@ def show_project_env_vars(config: dict) -> None:
         if k.startswith(config["CORE_PROJECT_VARIABLE_PREFIX"]):
             print(f"{k}={v}")
 
-# %% ../nbs/00_core.ipynb 21
-# import shutil # called at top
+
+
 def tool_is_present(tool_name: str) -> bool:
     """
     Check if a tool is present in the current environment
@@ -211,8 +210,6 @@ def tool_is_present(tool_name: str) -> bool:
     """
     return shutil.which(tool_name) is not None
 
-# %% ../nbs/00_core.ipynb 22
-# import sys # for stderr, called at top
 def tools_are_present(tool_names: list) -> bool:
     """
     Check if all tools are present in the current environment
@@ -230,12 +227,6 @@ def tools_are_present(tool_names: list) -> bool:
             tools_present = False
     return tools_present
 
-# %% ../nbs/00_core.ipynb 24
-# library imports handled at top
-# import pandas as pd
-# from pydantic import BaseModel, field_validator
-# from pathlib import Path
-# from typing import Any
 class SamplesheetConfig(BaseModel):
     """
     Configuration class for loading a sample sheet into a pandas dataframe
@@ -318,15 +309,13 @@ def get_samplesheet(samplesheet_config: SamplesheetConfig) -> pd.DataFrame:
     df = df.dropna(how="all")
     return df
 
-# %% ../nbs/00_core.ipynb 27
+
 def hello_world(name: str = "Not given") -> str:
     """
     A simple function that returns a hello world message with a name, for testing purposes
     """
     return f"Hello World! My name is {name}"
 
-# %% ../nbs/00_core.ipynb 31
-# from fastcore.script import call_parse # called at top, with settings.ini it will let you call it from the command line
 @call_parse
 def cli(
     name: str,  # Your name
@@ -345,7 +334,7 @@ def cli(
 
     print(hello_world(config["example"]["input"]["name"]))
 
-# %% ../nbs/00_core.ipynb 34
+
 import subprocess
 
 

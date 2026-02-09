@@ -43,10 +43,7 @@ class Card(BaseModel):
     name: str
     context: dict
 
-# %% ../nbs/01_pingme_class.ipynb 14
-# Imports at top
-# import json  # to manage json payloads
-# import re  # regular expression for parsing
+
 @staticmethod
 def resolved_payload(template: json, context: dict) -> json:
     """
@@ -66,7 +63,7 @@ def resolved_payload(template: json, context: dict) -> json:
     for key in context.keys():
         # Substitute all variables in payload with values from payload_context, it can also be set up that their are no variables in the payload
         str_temp = str_temp.replace("${" + key + "}", context[key])
-    if re.search("${.*}", str_temp):
+    if re.search(r"\$\{[^}]+\}", str_temp):
         # Check if there are any variables left, this is not allowed
         raise ValueError("Unresolved variables in payload")
     return json.loads(str_temp)
@@ -89,6 +86,8 @@ class PingMe:
         if config_file is None:
             config_file = "./config/example.env"
         config = core.get_config(os.environ.get("CORE_CONFIG_FILE", config_file))
+        print(config)
+        print(card.context)
         if card.name not in config["pingme"]["cards"]:
             raise ValueError(
                 f"Card name {card.name} not found in config file, check spelling"
@@ -153,15 +152,12 @@ def send_to_webhook(
         raise Exception(f"Error sending message to webhook: {e}")
     return response
 
-# %% ../nbs/01_pingme_class.ipynb 20
+
 @patch
 def send_webhook(self: PingMe) -> dict:
     return send_to_webhook(self.webhook["url"], json.dumps(self.payload))
 
-# %% ../nbs/01_pingme_class.ipynb 23
-# Imports at the top
-# import email.mime.text  # to format emails
-# import smtplib  # to send emails
+
 @staticmethod
 def send_to_email(
     payload: json,
@@ -211,15 +207,15 @@ def send_to_email(
     try:
         email_connection.ehlo()
         email_connection.starttls()
-        email_connection.ehlo()
-        email_connection.login(user, password)
+        email_connection.ehlo() 
+        # # email_connection.login(user, password)
         email_connection.sendmail(from_, to, msg.as_string())
         email_status = True
     finally:
         email_connection.quit()
         return json.dumps({"response": email_status})
 
-# %% ../nbs/01_pingme_class.ipynb 24
+
 @patch
 def send_email(self: PingMe) -> dict:
     return send_to_email(
@@ -233,8 +229,7 @@ def send_email(self: PingMe) -> dict:
         self.email["smtp"]["password"],
     )
 
-# %% ../nbs/01_pingme_class.ipynb 25
-# import datetime  # to get current date and time which is used in logging
+
 @staticmethod
 def send_to_logfile(logfile: str, title: str, text: str) -> dict:
     """
@@ -292,7 +287,6 @@ def cli(
     card = Card
     card.name = config["pingme"]["user_input"]["card"]["name"]
     card.context = config["pingme"]["user_input"]["card"]["context"]
-    print(card)
     pingme = PingMe(card, config_file)
 
     if not webhook and not email and not logfile:
