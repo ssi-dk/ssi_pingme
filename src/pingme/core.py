@@ -54,7 +54,7 @@ def setup_logging(log_level=None):
     """Configure logging for the application
     
     Args:
-        log_level: The logging level to use, if None it will default to DEBUG in dev mode and INFO in production mode
+        log_level (logging.Level): The logging level to use, if None it will default to DEBUG in dev mode and INFO in production mode
     """
     log_level = log_level or (logging.DEBUG if DEV_MODE else logging.INFO)
 
@@ -342,8 +342,6 @@ def create_bash_script(script_path, script_content, slurm_params=None):
         script_content (str): Content of the bash script
         slurm_params (dict): Dictionary of Slurm parameters to add as headers (optional)
 
-    Returns:
-        None
     """
 
     # Add slurm headers to the script

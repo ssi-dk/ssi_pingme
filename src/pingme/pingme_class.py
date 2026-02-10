@@ -257,8 +257,7 @@ def cli(
     pingme --config_file ./config/config.env --context '{"title":"Test Title", "text":"Test Text"}' --webhook --email --logfile --card_name default --card_dir ./cards/ --card_ext .yaml
     NOTE: Will require use of ./cards/default.yaml and ./config/config.default.env to be set up properly
 
-    Returns:
-        bool: True if successful, False if not
+    
     """
     config = core.get_config(config_file)
 
