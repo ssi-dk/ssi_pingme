@@ -11,9 +11,9 @@ def parse_smtp_response(response):
     The response should be a JSON string with a "response" key that is True if the email was sent successfully.
 
     Args:
-    response: str: The SMTP response as a JSON string
+        response (str): The SMTP response as a JSON string
     Returns:
-    dict: A dictionary with status_code and response message
+        dict: A dictionary with status_code and response message
     """ 
     if json.loads(response).get("response") is True:
         response_data = {"status_code": 200, "response": "Email sent successfully"}
@@ -27,9 +27,9 @@ def parse_webhook_response(response):
     The response should be a JSON string with a "status_code" key that is 200 if the message was sent successfully.
 
     Args:
-    response: str: The webhook response as a JSON string
+        response (str): The webhook response as a JSON string
     Returns:
-    dict: A dictionary with status_code and response message
+        dict: A dictionary with status_code and response message
     """ 
 
     try:
@@ -145,7 +145,7 @@ def pingme_send_default_card_to_webhook(
     Send a card to the webhook with default values
 
     Args:
-    - config_file: str = None: Path to the config file, none uses default
+        config_file: str = None: Path to the config file
     """
     # Override settings if provided
     if config_file:
@@ -164,9 +164,9 @@ def pingme_send_simple_card_to_webhook(
     Send a card to the webhook with title and text
 
     Args:
-    - title: str: Title of the card
-    - text: str: Text of the card
-    - config_file: str = None: Path to the config file, none uses default
+        title (str): Title of the card
+        text (str): Text of the card
+        config_file (str): Path to the config file, none uses default
     """
     # Override settings if provided
     if config_file:
@@ -183,8 +183,8 @@ def pingme_send_card_to_webhook(
     Send a card to the webhook
 
     Args:
-    - card: Card: Card object to send
-    - config_file: str = None: Path to the config file, none uses default
+        card (Card): Card object to send
+        config_file (str): Path to the config file, none uses default
     """
     # Override settings if provided
     if config_file:
@@ -201,7 +201,7 @@ def pingme_send_default_card_to_email(
     Send a card to email with default values
 
     Args:
-    - config_file: str = None: Path to the config file, none uses default
+        config_file (str): Path to the config file, none uses default
     """
     # Override settings if provided
     if config_file:
@@ -220,9 +220,9 @@ def pingme_send_simple_card_to_email(
     Send a card to email with title and text
 
     Args:
-    - title: str: Title of the email
-    - text: str: Text of the email
-    - config_file: str = None: Path to the config file, none uses default
+        title (str): Title of the email
+        text (str): Text of the email
+        config_file (str): Path to the config file, none uses default
     """
     # Override settings if provided
     if config_file:
@@ -239,8 +239,8 @@ def pingme_send_card_to_email(
     Send a card to email
 
     Args:
-    - card: Card: Card object to send
-    - config_file: str = None: Path to the config file, none uses default
+        card (Card): Card object to send
+        config_file (str): Path to the config file, none uses default
     """
     # Override settings if provided
     if config_file:

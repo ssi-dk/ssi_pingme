@@ -1,0 +1,3 @@
+
+::: pingme.pingme_class
+

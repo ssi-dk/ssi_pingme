@@ -35,8 +35,8 @@ def webhook_card_simple(title: str, text: str):
     Send a simple card to the webhook, should be used for most general use cases of sending a message.
 
     Args:
-    title: Title of the card
-    text: Text of the card
+        title (str):  Title of the card
+        text (str): Text of the card
     """
     try:
         return NotificationService.send_simple_card_to_webhook(title, text)
@@ -50,7 +50,7 @@ def webhook_card(card: Card):
     Send a card to the webhook, card defines a card thats installed into the config.yaml. Advanced usage which may not get used.
 
     Args:
-    card: Card object
+        card (Card): Card object
     """
     try:
         return NotificationService.send_card_to_webhook(card)
@@ -75,8 +75,8 @@ def email_card_simple(title: str, text: str):
     Send a simple card via email, should be used for most general use cases of sending an email message.
 
     Args:
-    title: Title of the email (subject)
-    text: Text of the email
+        title (str): Title of the email (subject)
+        text (str): Text of the email
     """
     try:
         return NotificationService.send_simple_card_to_email(title, text)
@@ -90,7 +90,7 @@ def email_card(card: Card):
     Send a card via email, card defines a card that's installed into the config.yaml. Advanced usage which may not get used.
 
     Args:
-    card: Card object
+        card (Card): Card object
     """
     try:
         return NotificationService.send_card_to_email(card)
@@ -112,7 +112,13 @@ def webservice(
     port: int = 5000,  # Port to run the server on"
     config_file: str = None,  # Path to config file"
 ):
-    """Start the PingMe API server."""
+    """Start the PingMe API server
+    
+    Args:
+        host (str): Host to run the server on, default is 127.0.1
+        port (int): Port to run the server on, default is 5000
+        config_file (str): Path to config file, default is None which uses default config file
+    """
     # Override settings if provided
     if config_file is not None:
         settings.config_file = config_file
