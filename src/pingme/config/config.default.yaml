@@ -24,7 +24,8 @@ pingme:
                 host: ${PINGME_EMAIL_SMTP_HOST}
                 port: ${PINGME_EMAIL_SMTP_PORT}
         webhook:
-            url: ${PINGME_WEBHOOK_URL}
+            channels:
+                default: ${PINGME_WEBHOOK_URL_DEFAULT}
             headers:
                 Content-Type: application/json
         logfile:

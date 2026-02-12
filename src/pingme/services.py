@@ -43,7 +43,7 @@ def parse_webhook_response(response):
 
 class NotificationService:
     @staticmethod
-    def send_default_card_to_webhook():
+    def send_default_card_to_webhook(channel: str = None):
         # Handles all logic for processing notifications
         logger.info("Sending default webhook card")
         card = Card.model_validate(
@@ -56,12 +56,12 @@ class NotificationService:
             card,
             config_file=settings.config_file,
         )
-        response = notification.send_webhook()
+        response = notification.send_webhook(channel=channel)
        
         return parse_webhook_response(response)
 
     @staticmethod
-    def send_simple_card_to_webhook(title: str, text: str):
+    def send_simple_card_to_webhook(title: str, text: str, channel: str = None):
         # Handles all logic for processing notifications
         logger.info("Sending simple webhook card")
         card = Card.model_validate(
@@ -74,19 +74,19 @@ class NotificationService:
             card,
             config_file=settings.config_file,
         )
-        response = notification.send_webhook()
+        response = notification.send_webhook(channel=channel)
         # Handle response safely
         return parse_webhook_response(response)
 
     @staticmethod
-    def send_card_to_webhook(card: Card):
+    def send_card_to_webhook(card: Card, channel: str = None):
         # Handles all logic for processing notifications
         logger.info("Sending webhook card")
         notification = PingMe(
             card,
             config_file=settings.config_file,
         )
-        response = notification.send_webhook()
+        response = notification.send_webhook(channel=channel)
         # Handle response safely
         return parse_webhook_response(response)
 
@@ -109,7 +109,7 @@ class NotificationService:
         return parse_smtp_response(response)
 
     @staticmethod
-    def send_simple_card_to_email(title: str, text: str):
+    def send_simple_card_to_email(title: str, text: str, channel: str = None):
         # Handles all logic for processing email notifications
         logger.info("Sending simple email card")
         card = Card.model_validate(
@@ -126,7 +126,7 @@ class NotificationService:
         return parse_smtp_response(response)
 
     @staticmethod
-    def send_card_to_email(card: Card):
+    def send_card_to_email(card: Card, channel: str = None):
         # Handles all logic for processing email notifications
         logger.info("Sending email card")
         notification = PingMe(
@@ -140,17 +140,19 @@ class NotificationService:
 @call_parse
 def pingme_send_default_card_to_webhook(
     config_file: str = None,
+    channel: str = None,
 ):
     """
     Send a card to the webhook with default values
 
     Args:
         config_file: str = None: Path to the config file
+        channel: str = None: Channel to send the webhook to, if not set uses default channel
     """
     # Override settings if provided
     if config_file:
         settings.config_file = config_file
-    NotificationService.send_default_card_to_webhook()
+    NotificationService.send_default_card_to_webhook(channel=channel)
 
 
 # Make a CLI function using `call_parse` to handle arguments

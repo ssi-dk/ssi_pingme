@@ -102,10 +102,6 @@ from fastcore.script import call_parse
 
 # Project specific libraries
 import shutil  # using shell utilities
-import pandas as pd
-from pydantic import BaseModel, field_validator
-from pathlib import Path
-from typing import Any
 
 
 def set_env_variables(config_path: str, overide_env_vars: bool = True) -> bool:
@@ -164,7 +160,17 @@ def get_config(config_path: str = None, overide_env_vars: bool = True) -> dict:
         ),
         strict=False,
     ).export()
+    
 
+    
+    # loop through all environmental variables and print the ones with "WEBHOOK" in the name
+    prefix = 'PINGME_WEBHOOK_URL_'
+    for k, v in os.environ.items():
+        if k.startswith(prefix):
+            channel_name = k[len(prefix):].lower()
+            config["pingme"]["options"]["webhook"]["channels"][channel_name] = v
+
+    
     return config
 
 
@@ -218,88 +224,6 @@ def tools_are_present(tool_names: list) -> bool:
             tools_present = False
     return tools_present
 
-class SamplesheetConfig(BaseModel):
-    """
-    Configuration class for loading a sample sheet into a pandas dataframe
-
-    Extends:
-        BaseModel
-    """
-
-    path: str
-    delimiter: str = "\t"
-    header: int = 0
-    columns: list | None = None
-
-    # Custom validator to check if the file exists
-    @field_validator("path")
-    def check_file_exists(cls, value):
-        if not Path(value).is_file():
-            raise ValueError(f"The file at path '{value}' does not exist.")
-        return value
-
-    # Override __init__ to accept a dictionary directly, for backwards compatibility probably should just use parse_obj
-    def __init__(self, config: dict[str, Any]):
-        super().__init__(**config)  # Unpack dictionary internally
-
-
-def get_samplesheet(samplesheet_config: SamplesheetConfig) -> pd.DataFrame:
-    """
-    Load the sample sheet into a pandas dataframe
-    If columns is not None then it will only load those columns
-    If the sample sheet is a csv then it will load it as a csv, otherwise it will assume it's a tsv
-
-    Expected samplesheet_config:
-    sample_sheet:
-      path: path/to/sample_sheet.tsv
-      delimiter: '\t' # Optional, will assume , for csv and \t otherwises
-      header: 0 # Optional, 0 indicates first row is header, None indicates no header
-      columns: ['column1', 'column2', 'column3'] # Optional, if not provided all columns will be used
-
-    Example sample sheet:
-    #sample_id	file_path	metadata1	metadata2
-    Sample1	/path/to/sample1.fasta	value1	option1
-    Sample2	/path/to/sample2.fasta	value2	option2
-    Sample3	/path/to/sample3.fasta	value3	option1
-    Sample4	/path/to/sample4.fasta	value1	option2
-    Sample5	/path/to/sample5.fasta	value2	option1
-
-    Args:
-        samplesheet_config (SamplesheetConfig): The configuration for loading the sample sheet
-
-    Returns:
-        pd.DataFrame: The sample sheet as a pandas dataframe
-    """
-    try:
-        # note when we have a header the first column may begin with a #, so we need to remove it
-        df = pd.read_csv(
-            samplesheet_config.path,
-            delimiter=samplesheet_config.delimiter,
-            header=samplesheet_config.header,
-            comment=None,
-        )
-    except Exception as e:
-        print(
-            "Error: Could not load sample sheet into dataframe, you have a problem with your sample sheet or the configuration."
-        )
-        raise e
-
-    # Check the first header has a # in it, if so remove it for only that item
-    if df.columns[0].startswith("#"):
-        df.columns = [col.lstrip("#") for col in df.columns]
-    # Ensure the sample sheet has the correct columns
-    if samplesheet_config.columns is not None and not all(
-        [col in df.columns for col in samplesheet_config.columns]
-    ):
-        raise ValueError("Error: Sample sheet does not have the correct columns")
-    # also drop columns which are not needed
-    if samplesheet_config.columns is not None:
-        df = df[samplesheet_config.columns]
-
-    # Clean the df of any extra rows that can be caused by empty lines in the sample sheet
-    df = df.dropna(how="all")
-    return df
-
 
 def hello_world(name: str = "Not given") -> str:
     """
@@ -326,67 +250,5 @@ def cli(
     print(hello_world(config["example"]["input"]["name"]))
 
 
-import subprocess
 
 
-def create_bash_script(script_path, script_content, slurm_params=None):
-    """
-    Create a bash script with the given content.
-
-    Args:
-        script_path (str): Path to save the bash script
-        script_content (str): Content of the bash script
-        slurm_params (dict): Dictionary of Slurm parameters to add as headers (optional)
-
-    """
-
-    # Add slurm headers to the script
-    if slurm_params:
-        with open(script_path, "r") as script_file:
-            script_content = script_file.read()
-        script_content = (
-            "#!/bin/bash\n"
-            + "\n".join(
-                [f"#SBATCH --{key}={value}" for key, value in slurm_params.items()]
-            )
-            + "\n"
-            + script_content
-        )
-        with open(script_path, "w") as script_file:
-            script_file.write(script_content)
-    else:
-        with open(script_path, "w") as script_file:
-            script_file.write(script_content)
-
-
-def execute_job(script_path, use_slurm=False, slurm_params=None):
-    """
-    Executes a bash script either locally (bash) or via Slurm.
-    Args:
-        script_path (str): Path to the bash script to execute
-        use_slurm (bool): Whether to execute the script using Slurm (sbatch)
-        slurm_params (dict): Dictionary of Slurm parameters to add as headers (optional, only used if use_slurm is True)
-    Returns:
-        None
-    """
-    if use_slurm:
-        # Build sbatch command
-        sbatch_command = ["sbatch"]
-        if slurm_params:
-            for key, value in slurm_params.items():
-                sbatch_command.append(f"--{key}={value}")
-        sbatch_command.append(script_path)
-
-        # Submit to Slurm
-        result = subprocess.run(sbatch_command, capture_output=True, text=True)
-        if result.returncode == 0:
-            print(f"Job submitted to Slurm: {result.stdout.strip()}")
-        else:
-            print(f"Error submitting to Slurm: {result.stderr.strip()}")
-    else:
-        # Run locally
-        result = subprocess.run(["bash", script_path], capture_output=True, text=True)
-        if result.returncode == 0:
-            print(f"Script executed locally: {result.stdout.strip()}")
-        else:
-            print(f"Error executing script locally: {result.stderr.strip()}")

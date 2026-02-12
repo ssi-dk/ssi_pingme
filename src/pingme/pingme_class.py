@@ -101,7 +101,7 @@ class PingMe:
     def __repr__(self) -> str:
         return self.__str__()
 
-# %% ../nbs/01_pingme_class.ipynb 18
+
 import requests  # to send requests to webhooks
 
 
@@ -132,8 +132,11 @@ def send_to_webhook(
 
 
 @patch
-def send_webhook(self: PingMe) -> dict:
-    return send_to_webhook(self.webhook["url"], json.dumps(self.payload))
+def send_webhook(self: PingMe, channel: str = None) -> dict:
+    
+    webhook_url = self.webhook["channels"].get(channel, self.webhook["channels"]["default"])
+    
+    return send_to_webhook(webhook_url, json.dumps(self.payload))
 
 
 @staticmethod

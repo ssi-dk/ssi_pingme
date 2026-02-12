@@ -17,18 +17,18 @@ app = FastAPI()
 
 
 @app.post("/webhook/default")
-def webhook_card_default():
+def webhook_card_default(channel: str = None):
     """
     Send a default card to the webhook, intention is strictly for testing and showcasing.
     """
     try:
-        return NotificationService.send_default_card_to_webhook()
+        return NotificationService.send_default_card_to_webhook(channel=channel)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/webhook/simple")
-def webhook_card_simple(title: str, text: str):
+def webhook_card_simple(title: str, text: str, channel: str = None):
     """
     Send a simple card to the webhook, should be used for most general use cases of sending a message.
 
@@ -37,13 +37,13 @@ def webhook_card_simple(title: str, text: str):
         text (str): Text of the card
     """
     try:
-        return NotificationService.send_simple_card_to_webhook(title, text)
+        return NotificationService.send_simple_card_to_webhook(title, text, channel=channel)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/webhook/card/")
-def webhook_card(card: Card):
+def webhook_card(card: Card, channel: str = None):
     """
     Send a card to the webhook, card defines a card thats installed into the config.yaml. Advanced usage which may not get used.
 
@@ -51,7 +51,7 @@ def webhook_card(card: Card):
         card (Card): Card object
     """
     try:
-        return NotificationService.send_card_to_webhook(card)
+        return NotificationService.send_card_to_webhook(card, channel=channel)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
