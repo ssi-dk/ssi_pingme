@@ -50,7 +50,7 @@ class TestWebhookEndpoints:
         )
         
         assert response.status_code == 200
-        mock_send.assert_called_once_with("Test Title", "Test Text")
+        mock_send.assert_called_once_with("Test Title", "Test Text", channel=None)
     
     @patch('pingme.services.NotificationService.send_card_to_webhook')
     def test_webhook_card_custom_success(self, mock_send):

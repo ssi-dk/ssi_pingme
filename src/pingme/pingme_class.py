@@ -192,6 +192,8 @@ def send_to_email(
         # # email_connection.login(user, password)
         email_connection.sendmail(from_, to, msg.as_string())
         email_status = True
+    except Exception:
+        email_status = False
     finally:
         email_connection.quit()
     return json.dumps({"response": email_status})
