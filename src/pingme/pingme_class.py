@@ -194,7 +194,7 @@ def send_to_email(
         email_status = True
     finally:
         email_connection.quit()
-        return json.dumps({"response": email_status})
+    return json.dumps({"response": email_status})
 
 
 @patch
