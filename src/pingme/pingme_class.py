@@ -285,7 +285,6 @@ def cli(
             pingme.send_logfile()
             print("Sent to logfile", file=sys.stdout)
 
-# %% ../nbs/01_pingme_class.ipynb 29
 @call_parse
 def cli_batch(
     task_file: str = None,  # task file to run a batch, used exclusively of other other variables
