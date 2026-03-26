@@ -74,6 +74,8 @@ class NotificationService:
             card,
             config_file=settings.config_file,
         )
+        logger.debug(f"Payload: {notification.payload}")
+        logger.debug(f"Webhook URL: {notification.webhook}")
         response = notification.send_webhook(channel=channel)
         # Handle response safely
         return parse_webhook_response(response)

@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pingme"
+name = "ssi_pingme"
 dynamic = ["version"]
 description = ''
 readme = "README.md"
