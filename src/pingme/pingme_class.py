@@ -1,7 +1,7 @@
 import os
 import json  # to manage json payloads
 import re  # regular expression for parsing
-
+from .core import logger
 from fastcore.script import call_parse
 from fastcore.utils import patch
 
@@ -124,6 +124,7 @@ def send_to_webhook(
         raise Exception("Webhook URL not set")
     # Send message to webhook
     try:
+        logger.debug(f"Sending message to webhook: {url} with payload: {payload} and header: {header}")
         response = requests.post(url, data=payload, headers=header)
     except Exception as e:
         raise Exception(f"Error sending message to webhook: {e}")
